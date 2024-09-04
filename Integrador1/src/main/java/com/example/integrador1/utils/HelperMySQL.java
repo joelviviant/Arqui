@@ -102,7 +102,6 @@ public class HelperMySQL {
                 "idFactura INT NOT NULL, " +
                 "idProducto INT NOT NULL, " +
                 "cantidad INT , " +
-                "CONSTRAINT FacturaProducto_pk PRIMARY KEY (idFactura),  " +
                 "CONSTRAINT FK_idProducto_f FOREIGN KEY (idProducto) REFERENCES Producto (idProducto),  " +
                 "CONSTRAINT FK_idFactura_p FOREIGN KEY (idFactura) REFERENCES Factura (idFactura))";
         this.conn.prepareStatement(tableFactura_Producto).execute();

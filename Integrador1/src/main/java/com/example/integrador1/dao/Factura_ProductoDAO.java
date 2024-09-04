@@ -16,17 +16,16 @@ public class Factura_ProductoDAO {
     }
 
     public void insertFactura_Producto(Factura_Producto factura_Producto) {
-        String query = "INSERT INTO Factura_Producto (idFactura, idProducto, cantidad) VALUES (?, ?, ?) " +
-                "ON DUPLICATE KEY UPDATE cantidad = VALUES(cantidad)";
+        String query = "INSERT INTO Factura_Producto (idFactura, idProducto, cantidad) VALUES (?, ?, ?)";
         PreparedStatement ps = null;
 
         try {
             ps = conn.prepareStatement(query);
-            ps.setInt(1, factura_Producto.getIdFactura());
-            ps.setInt(2, factura_Producto.getIdProducto());
-            ps.setInt(3, factura_Producto.getCantidad());
+            ps.setInt(1, factura_Producto.getIdFactura()); // idPersona
+            ps.setInt(2, factura_Producto.getIdProducto()); // nombre
+            ps.setInt(3, factura_Producto.getCantidad()); // edad
             ps.executeUpdate();
-            System.out.println("Factura_Producto insertado o actualizado exitosamente.");
+            System.out.println("Factura_Producto insertado exitosamente.");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
