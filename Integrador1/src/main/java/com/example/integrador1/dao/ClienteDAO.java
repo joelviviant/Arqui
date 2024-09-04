@@ -40,10 +40,36 @@ public class ClienteDAO {
         }
     }
 
-
     public boolean delete(Integer id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        String query = "DELETE FROM Cliente WHERE idCliente = ?";
+        PreparedStatement ps = null;
+        boolean isDeleted = false;
+
+        try {
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, id);
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Cliente eliminada exitosamente.");
+                isDeleted = true;
+            } else {
+                System.out.println("No se encontró ningun cliente con ese ID.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                conn.commit();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return isDeleted;
     }
 
 
