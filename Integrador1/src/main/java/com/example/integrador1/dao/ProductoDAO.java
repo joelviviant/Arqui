@@ -3,9 +3,7 @@ package com.example.integrador1.dao;
 import com.example.integrador1.entities.Cliente;
 import com.example.integrador1.entities.Producto;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class ProductoDAO {
     private Connection conn;
@@ -37,5 +35,32 @@ public class ProductoDAO {
                 e.printStackTrace();
             }
         }
+    }
+
+    public String obtenerProductoConMayorRecaudacion() {
+        String producto = null;
+        String query = "SELECT Producto.nombre, SUM(Factura_Producto.cantidad * Producto.valor) AS recaudacion " +
+                "FROM Producto " +
+                "JOIN Factura_Producto ON Producto.idProducto = Factura_Producto.idProducto " +
+                "GROUP BY Producto.idProducto " +
+                "ORDER BY recaudacion DESC " +
+                "LIMIT 1";
+
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            if (((ResultSet) rs).next()) {
+                producto = rs.getString("nombre");
+                double recaudacion = rs.getDouble("recaudacion");
+
+                System.out.println("El producto que más recaudó es: " + producto);
+                System.out.println("Recaudación: " + recaudacion);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return producto;
     }
 }
