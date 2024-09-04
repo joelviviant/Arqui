@@ -1,6 +1,14 @@
 package com.example.integrador1.utils;
 
 
+import com.example.integrador1.dao.ClienteDAO;
+import com.example.integrador1.entities.Cliente;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -95,5 +103,37 @@ public class HelperMySQL {
         this.conn.commit();
     }
 
+
+    private Iterable<CSVRecord> getData(String archivo) throws IOException {
+        String path = "src\\main\\resources\\" + archivo;
+        Reader in = new FileReader(path);
+        String[] header = {};  // Puedes configurar tu encabezado personalizado aquí si es necesario
+        CSVParser csvParser = CSVFormat.EXCEL.withHeader(header).parse(in);
+        Iterable<CSVRecord> records = csvParser.getRecords();
+        return records;
+    }
+
+    public void populateDB() throws Exception {
+        System.out.println("Populating DB...");
+        for(CSVRecord row : getData("clientes.csv")) {
+            if(row.size() >= 3) { // Verificar que hay al menos 3 campos en el CSVRecord
+                String idString = row.get(0);
+                if(!idString.isEmpty()) {
+                    try {
+                        int id = Integer.parseInt(idString);
+                        String nombre = row.get(1);
+                        String email = row.get(2);
+
+                        Cliente cliente = new Cliente(id, nombre, email);
+                        ClienteDAO c = new ClienteDAO(conn);
+                        c.insertCliente(cliente);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Error de formato en datos de cliente: " + e.getMessage());
+                    }
+                }
+            }
+        }
+        System.out.println("Clientes insertados");
+    }
 
 }

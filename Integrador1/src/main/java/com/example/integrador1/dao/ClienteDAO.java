@@ -51,7 +51,7 @@ public class ClienteDAO {
             int rowsAffected = ps.executeUpdate();
 
             if (rowsAffected > 0) {
-                System.out.println("Cliente eliminada exitosamente.");
+                System.out.println("Cliente eliminado exitosamente.");
                 isDeleted = true;
             } else {
                 System.out.println("No se encontró ningun cliente con ese ID.");
