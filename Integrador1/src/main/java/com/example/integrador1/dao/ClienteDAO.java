@@ -23,7 +23,6 @@ public class ClienteDAO {
             ps.setInt(1, cliente.getIdCliente()); // idPersona
             ps.setString(2, cliente.getNombre()); // nombre
             ps.setString(3, cliente.getEmail()); // edad
-
             ps.executeUpdate();
             System.out.println("Cliente insertado exitosamente.");
         } catch (SQLException e) {

@@ -2,7 +2,13 @@ package com.example.integrador1.utils;
 
 
 import com.example.integrador1.dao.ClienteDAO;
+import com.example.integrador1.dao.FacturaDAO;
+import com.example.integrador1.dao.Factura_ProductoDAO;
+import com.example.integrador1.dao.ProductoDAO;
 import com.example.integrador1.entities.Cliente;
+import com.example.integrador1.entities.Factura;
+import com.example.integrador1.entities.Factura_Producto;
+import com.example.integrador1.entities.Producto;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -115,6 +121,7 @@ public class HelperMySQL {
 
     public void populateDB() throws Exception {
         System.out.println("Populating DB...");
+
         for(CSVRecord row : getData("clientes.csv")) {
             if(row.size() >= 3) { // Verificar que hay al menos 3 campos en el CSVRecord
                 String idString = row.get(0);
@@ -123,7 +130,6 @@ public class HelperMySQL {
                         int id = Integer.parseInt(idString);
                         String nombre = row.get(1);
                         String email = row.get(2);
-
                         Cliente cliente = new Cliente(id, nombre, email);
                         ClienteDAO c = new ClienteDAO(conn);
                         c.insertCliente(cliente);
@@ -134,6 +140,65 @@ public class HelperMySQL {
             }
         }
         System.out.println("Clientes insertados");
+
+        for(CSVRecord row : getData("productos.csv")) {
+            if(row.size() >= 3) { // Verificar que hay al menos 3 campos en el CSVRecord
+                String idString = row.get(0);
+                if(!idString.isEmpty()) {
+                    try {
+                        int id = Integer.parseInt(idString);
+                        String nombre = row.get(1);
+                        float valor = Float.parseFloat(row.get(2));
+                        Producto producto = new Producto(id, nombre, valor);
+                        ProductoDAO p = new ProductoDAO(conn);
+                        p.insertProducto(producto);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Error de formato en datos de cliente: " + e.getMessage());
+                    }
+                }
+            }
+        }
+        System.out.println("Productos insertados");
+
+        for(CSVRecord row : getData("facturas.csv")) {
+            if(row.size() >= 2) { // Verificar que hay al menos 3 campos en el CSVRecord
+                String idString = row.get(0);
+                if(!idString.isEmpty()) {
+                    try {
+                        int idFactura = Integer.parseInt(idString);
+                        int idCliente = Integer.parseInt(row.get(1));
+                        Factura factura = new Factura(idFactura, idCliente);
+                        FacturaDAO f = new FacturaDAO(conn);
+                        f.insertFactura(factura);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Error de formato en datos de cliente: " + e.getMessage());
+                    }
+                }
+            }
+        }
+        System.out.println("Facturas insertadas");
+
+
+        for(CSVRecord row : getData("facturas-productos.csv")) {
+            if(row.size() >= 3) { // Verificar que hay al menos 3 campos en el CSVRecord
+                String idString = row.get(0);
+                if(!idString.isEmpty()) {
+                    try {
+                        int idFactura = Integer.parseInt(idString);
+                        int idProducto = Integer.parseInt(row.get(1));
+                        int cantidad = Integer.parseInt(row.get(2));
+                        Factura_Producto factura_producto = new Factura_Producto(idFactura, idProducto,cantidad);
+                        Factura_ProductoDAO f = new Factura_ProductoDAO(conn);
+                        f.insertFactura_Producto(factura_producto);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Error de formato en datos de cliente: " + e.getMessage());
+                    }
+                }
+            }
+        }
+        System.out.println("Factura_Producto insertadas");
+
+
     }
 
 }
