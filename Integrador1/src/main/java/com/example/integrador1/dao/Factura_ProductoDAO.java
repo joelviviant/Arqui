@@ -18,7 +18,6 @@ public class Factura_ProductoDAO {
     public void insertFactura_Producto(Factura_Producto factura_Producto) {
         String query = "INSERT INTO Factura_Producto (idFactura, idProducto, cantidad) VALUES (?, ?, ?)";
         PreparedStatement ps = null;
-
         try {
             ps = conn.prepareStatement(query);
             ps.setInt(1, factura_Producto.getIdFactura()); // idPersona

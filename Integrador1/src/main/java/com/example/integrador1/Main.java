@@ -18,8 +18,13 @@ public class Main {
         db.createTables();
         db.populateDB();
         Connection conn  = MySQLDAOFactory.createConnection();//hago una conexion con la base de datos
+
+        //Servicio 1 (Producto con Mayor Recaudación)
         ProductoDAO productoConMayorRecaudación= new ProductoDAO(conn);
         productoConMayorRecaudación.obtenerProductoConMayorRecaudacion();
 
+        //Servicio 2 (Clientes ordenados por facturación)
+        ClienteDAO clienteDAO = new ClienteDAO(conn);
+        clienteDAO.ClientesOrdenadosPorFacturacion();
     }
 }

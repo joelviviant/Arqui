@@ -37,6 +37,15 @@ public class ProductoDAO {
         }
     }
 
+
+
+    //Método obtenerProductoConMayorRecaudacion()
+    //Se define una consulta que suma la recaudación total para cada producto.
+    //La consulta combina las tablas Producto y Factura_Producto usando un JOIN basado en el campo idProducto.
+    //Se agrupan los resultados por producto, ordenando las recaudaciones en orden descendente.
+    //El LIMIT 1 asegura que se devuelva únicamente el producto con mayor recaudación.
+
+
     public String obtenerProductoConMayorRecaudacion() {
         String producto = null;
         String query = "SELECT Producto.nombre, SUM(Factura_Producto.cantidad * Producto.valor) AS recaudacion " +

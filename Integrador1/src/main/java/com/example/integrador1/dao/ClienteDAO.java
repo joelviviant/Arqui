@@ -1,10 +1,8 @@
 package com.example.integrador1.dao;
 
 import  com.example.integrador1.entities.Cliente;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.List;
 
 public class ClienteDAO {
@@ -107,9 +105,31 @@ public class ClienteDAO {
     }
 
 
-    public List<Cliente> selectList() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'selectList'");
+    public void ClientesOrdenadosPorFacturacion() {
+
+        String query = "SELECT Cliente.nombre, SUM(Factura_Producto.cantidad * Producto.valor) AS total_facturado " +
+                "FROM Cliente " +
+                "JOIN Factura ON Cliente.idCliente = Factura.idCliente " +
+                "JOIN Factura_Producto ON Factura.idFactura = Factura_Producto.idFactura " +
+                "JOIN Producto ON Factura_Producto.idProducto = Producto.idProducto " +
+                "GROUP BY Cliente.idCliente " +
+                "ORDER BY total_facturado DESC";
+
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            System.out.println("Lista de clientes ordenada por el total facturado:");
+
+            while (rs.next()) {
+                String nombreCliente = rs.getString("nombre");
+                double totalFacturado = rs.getDouble("total_facturado");
+
+                System.out.println("Cliente: " + nombreCliente + " - Total facturado: " + totalFacturado);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
