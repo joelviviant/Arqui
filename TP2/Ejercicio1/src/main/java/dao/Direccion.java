@@ -21,11 +21,11 @@ public class Direccion {
 	@Column
 	private String calle;
 	@OneToMany(mappedBy="domicilio", fetch=FetchType.LAZY)
-	private List<Persona> habitante;
+	private List<Persona> habitantes;
 	
 	public Direccion() {
 		super();
-		this.habitante = new ArrayList<Persona>();
+		this.habitantes = new ArrayList<Persona>();
 	}
 
 	public Direccion(String ciudad, String calle) {
@@ -55,7 +55,11 @@ public class Direccion {
 	}
 
 	public List<Persona> getHabitante() {
-		return habitante;
+		return habitantes;
+	}
+
+	public void setHabitante(Persona habitante) {
+		habitantes.add(habitante);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class Turno {
 	private int id;
 	
 	@Column
-	private Timestamp fecha;
+	private LocalDate fecha;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Persona> jugadores;
@@ -28,17 +29,17 @@ public class Turno {
 		super();
 	}
 
-	public Turno(Timestamp fecha) {
+	public Turno(LocalDate fecha) {
 		super();
 		this.fecha = fecha;
 		this.jugadores = new ArrayList<Persona>();
 	}
 
-	public Timestamp getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Timestamp fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 

@@ -69,9 +69,11 @@ public class Persona {
 	}
 
 	public void setDomicilio(Direccion domicilio) {
-		this.domicilio.getHabitante().remove(this);
-		domicilio.getHabitante().add(this);
 		this.domicilio = domicilio;
+		// También podrías establecer la relación inversa si es necesario
+		if (domicilio != null) {
+			domicilio.setHabitante(this); // Asumiendo que este método existe
+		}
 	}
 
 	public int getId() {
